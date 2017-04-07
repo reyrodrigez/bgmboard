@@ -6,7 +6,7 @@ export function ScoreBox(props) {
     <div class={style.scoreBox}>
 		<a onClick={props.increaseScore} class={style.scoreBoxUpdate}></a>
 		<a onClick={props.decreaseScore} class={style.scoreBoxUpdate}></a>
-		<div>{props.score}</div>
+		<h3>{props.score}</h3>
 	</div>
 	);
 }
