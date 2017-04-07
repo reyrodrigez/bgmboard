@@ -2,29 +2,61 @@ import { h, Component } from 'preact';
 import { ScoreBox } from './scorebox';
 import style from './style';
 
+const DEFAULTS = {
+	gameLength: 7,
+	userScore: 0,
+	opponentScore: 0,
+	gameState: '',
+	isCrawford: false,
+	isPostCrawford: false
+};
+
 export default class ScoreBoard extends Component {
 
-	state = {
-		gameLength: 3,
-		userScore: 0,
-		opponentScore: 0
+	state = Object.assign({}, DEFAULTS);
+
+	checkGameState () {
+		let {gameState, isCrawford, isPostCrawford,opponentScore, userScore, gameLength} = this.state;
+		const crawfordScore = gameLength-1;
+
+		if (opponentScore === gameLength || userScore === gameLength) {
+			gameState = 'Game ended';
+		} else if (isPostCrawford) {
+			gameState = 'Post Crawford game';
+		} else if (opponentScore === crawfordScore || userScore === crawfordScore) {
+			gameState = 'Crawford game';
+			isCrawford = true;
+		}
+		this.setState({
+			gameState,
+			isCrawford,
+			isPostCrawford
+		});
 	}
 
 	updateScore(scoreProperty, isDecreace, e) {
 		const modifier = isDecreace ? -1 : +1;
+		let {isPostCrawford} = this.state;
 
 		if (isDecreace && this.state[scoreProperty] === 0) {
 			return false;
 		}
-		this.setState(previousState => ({ [scoreProperty]: previousState[scoreProperty] + modifier }));
+
+		if (!isDecreace && this.state.isCrawford) {
+			isPostCrawford = true;
+		}
+
+		this.setState(previousState => ({ 
+			[scoreProperty]: previousState[scoreProperty] + modifier,
+			isPostCrawford
+		}));
+
+		this.checkGameState();
 
 	}
 
 	resetScores () {
-		this.setState({
-			userScore: 0,
-			opponentScore: 0
-		});
+		this.setState(DEFAULTS);
 	}
 
 	setGameLength (e) {
@@ -34,10 +66,11 @@ export default class ScoreBoard extends Component {
 		});
 	}
 
-	render({}, {userScore, opponentScore, gameLength}) {
+	render({}, {userScore, opponentScore, gameLength, gameState}) {
 		return (
 			<div class={style.scoreBoxes}>
 				{gameLength}
+				{gameState}
 				<ScoreBox
 					score={userScore}
 					increaseScore={this.updateScore.bind(this, 'userScore', false)}
