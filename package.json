@@ -18,7 +18,7 @@
     "webpack"
   ],
   "license": "MIT",
-  "author": "Jason Miller <laszlo.heves@gmail.com>",
+  "author": "Laszlo Heves <laszlo.heves@gmail.com>",
   "devDependencies": {
     "autoprefixer": "^6.4.0",
     "babel": "^6.5.2",
