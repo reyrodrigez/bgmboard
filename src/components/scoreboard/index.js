@@ -62,7 +62,7 @@ export default class ScoreBoard extends Component {
 
 	render({}, {userScore, opponentScore, gameLength, gameState}) {
 		return (
-			<div>
+			<div class={style.scoreBoard}>
 				<Header
 					setGameLength = {this.setGameLength.bind(this)}
 					gameLength = {gameLength}
