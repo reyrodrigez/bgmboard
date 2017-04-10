@@ -11,6 +11,12 @@ const DEFAULTS = {
 	isPostCrawford: false
 };
 
+const GAME_STATES = {
+	gameEnded: 'Game ended',
+	postCrawfordGame: 'Post Crawford game',
+	crawfordGame: 'Crawford game'
+};
+
 export default class ScoreBoard extends Component {
 
 	state = Object.assign({}, DEFAULTS);
@@ -20,11 +26,11 @@ export default class ScoreBoard extends Component {
 		const crawfordScore = gameLength-1;
 
 		if (opponentScore === gameLength || userScore === gameLength) {
-			gameState = 'Game ended';
+			gameState = GAME_STATES.gameEnded;
 		} else if (isPostCrawford) {
-			gameState = 'Post Crawford game';
+			gameState = GAME_STATES.postCrawfordGame;
 		} else if (opponentScore === crawfordScore || userScore === crawfordScore) {
-			gameState = 'Crawford game';
+			gameState = GAME_STATES.crawfordGame;
 			isCrawford = true;
 		}
 		this.setState({
